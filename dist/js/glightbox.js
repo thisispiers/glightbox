@@ -538,9 +538,11 @@
           }
         }
         if (key == 39) {
+          event.preventDefault();
           instance.nextSlide();
         }
         if (key == 37) {
+          event.preventDefault();
           instance.prevSlide();
         }
         if (key == 27) {
