@@ -579,9 +579,6 @@ class GlightboxInit {
         _.removeClass(prevSlide, this.effectsClasses);
         _.addClass(prevSlide, 'prev');
 
-        let animation = this.settings.slideEffect;
-        let animOut = animation !== 'none' ? this.settings.cssEfects[animation].out : animation;
-
         this.slidePlayerPause(prevSlide);
 
         this.trigger('slide_before_change', {
@@ -620,6 +617,9 @@ class GlightboxInit {
                 }
             ]);
         }
+
+        let animation = this.settings.slideEffect;
+        let animOut = animation !== 'none' ? this.settings.cssEfects[animation].out : animation;
         if (this.prevActiveSlideIndex > this.index && this.settings.slideEffect == 'slide') {
             // going back
             animOut = this.settings.cssEfects.slideBack.out;
