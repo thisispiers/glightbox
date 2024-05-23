@@ -240,7 +240,7 @@ class GlightboxInit {
     /**
      * Set Slide
      */
-    showSlide(index = 0, first = false) {
+    showSlide(index = 0, first = false, direction) {
         _.show(this.loader);
         this.index = parseInt(index);
 
@@ -250,7 +250,7 @@ class GlightboxInit {
         }
 
         // hide prev slide
-        this.slideAnimateOut();
+        this.slideAnimateOut(direction);
 
         let slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
 
@@ -351,7 +351,7 @@ class GlightboxInit {
      * calls goToslide
      */
     prevSlide() {
-        this.goToSlide(this.index - 1);
+        this.goToSlide(this.index - 1, 'prev');
     }
 
     /**
@@ -359,7 +359,7 @@ class GlightboxInit {
      * calls goToslide
      */
     nextSlide() {
-        this.goToSlide(this.index + 1);
+        this.goToSlide(this.index + 1, 'next');
     }
 
     /**
@@ -367,7 +367,7 @@ class GlightboxInit {
      * calls set slide
      * @param {Int} - index
      */
-    goToSlide(index = false) {
+    goToSlide(index = false, direction) {
         this.prevActiveSlide = this.activeSlide;
         this.prevActiveSlideIndex = this.index;
 
@@ -379,7 +379,7 @@ class GlightboxInit {
         } else if (index >= this.elements.length) {
             index = 0;
         }
-        this.showSlide(index);
+        this.showSlide(index, false, direction);
     }
 
     /**
@@ -570,7 +570,7 @@ class GlightboxInit {
     /**
      * Slide out
      */
-    slideAnimateOut() {
+    slideAnimateOut(direction) {
         if (!this.prevActiveSlide) {
             return false;
         }
@@ -599,7 +599,8 @@ class GlightboxInit {
                 slideConfig: this.elements[this.index].slideConfig,
                 trigger: this.elements[this.index].node,
                 player: this.getSlidePlayerInstance(this.index)
-            }
+            },
+            direction: direction
         });
 
         // settings.beforeSlideChange is deprecated and will be removed in a future update

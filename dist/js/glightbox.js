@@ -2242,13 +2242,14 @@
         var _this2 = this;
         var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var first = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        var direction = arguments.length > 2 ? arguments[2] : undefined;
         show(this.loader);
         this.index = parseInt(index);
         var current = this.slidesContainer.querySelector('.current');
         if (current) {
           removeClass(current, 'current');
         }
-        this.slideAnimateOut();
+        this.slideAnimateOut(direction);
         var slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
         if (hasClass(slideNode, 'loaded')) {
           this.slideAnimateIn(slideNode, first);
@@ -2323,17 +2324,18 @@
     }, {
       key: "prevSlide",
       value: function prevSlide() {
-        this.goToSlide(this.index - 1);
+        this.goToSlide(this.index - 1, 'prev');
       }
     }, {
       key: "nextSlide",
       value: function nextSlide() {
-        this.goToSlide(this.index + 1);
+        this.goToSlide(this.index + 1, 'next');
       }
     }, {
       key: "goToSlide",
       value: function goToSlide() {
         var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+        var direction = arguments.length > 1 ? arguments[1] : undefined;
         this.prevActiveSlide = this.activeSlide;
         this.prevActiveSlideIndex = this.index;
         if (!this.loop() && (index < 0 || index > this.elements.length - 1)) {
@@ -2344,7 +2346,7 @@
         } else if (index >= this.elements.length) {
           index = 0;
         }
-        this.showSlide(index);
+        this.showSlide(index, false, direction);
       }
     }, {
       key: "insertSlide",
@@ -2495,7 +2497,7 @@
       }
     }, {
       key: "slideAnimateOut",
-      value: function slideAnimateOut() {
+      value: function slideAnimateOut(direction) {
         if (!this.prevActiveSlide) {
           return false;
         }
@@ -2521,7 +2523,8 @@
             slideConfig: this.elements[this.index].slideConfig,
             trigger: this.elements[this.index].node,
             player: this.getSlidePlayerInstance(this.index)
-          }
+          },
+          direction: direction
         });
         if (isFunction(this.settings.beforeSlideChange)) {
           this.settings.beforeSlideChange.apply(this, [{
